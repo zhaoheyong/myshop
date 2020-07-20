@@ -4,10 +4,25 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "builder": "npm run pack:renderer && npm run builder:main",
+    "builder:main": "webpack --progress --colors --config .electron-config/webpack.prod.js && electron-builder",
+    "dev": "npm run dev:renderer | npm run dev:main",
+    "dev:main": "webpack --progress --colors --config .electron-config/webpack.dev.js && electron .",
+    "dev:renderer": "npm run serve",
+    "pack": "npm run pack:renderer && npm run pack:main",
+    "pack:main": "webpack --progress --colors --config .electron-config/webpack.prod.js && electron-builder --dir",
+    "pack:renderer": "npm run build",
+    "postinstall": "electron-rebuild install-app-deps",
+    "rebuild": "electron-rebuild",
+    "start": "npm run pack:renderer && npm run start:main",
+    "start:main": "webpack --progress --colors --config .electron-config/webpack.prod.js && electron ."
   },
+  "main": "./dist/main.js",
   "dependencies": {
+    "axios": "^0.19.2",
     "core-js": "^3.6.5",
+    "element-ui": "^2.13.2",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0"
   },
@@ -15,6 +30,20 @@
     "@vue/cli-plugin-babel": "~4.4.0",
     "@vue/cli-plugin-router": "~4.4.0",
     "@vue/cli-service": "~4.4.0",
-    "vue-template-compiler": "^2.6.11"
+    "babel-plugin-component": "^1.1.1",
+    "vue-cli-plugin-electron-webpack": "^1.1.8",
+    "vue-cli-plugin-element": "^1.0.1",
+    "vue-template-compiler": "^2.6.11",
+    "webpack": "^4.39.1",
+    "webpack-cli": "^3.3.6"
+  },
+  "build": {
+    "directories": {
+      "output": "build"
+    },
+    "files": [
+      "./dist/**"
+    ],
+    "asar": true
   }
 }
