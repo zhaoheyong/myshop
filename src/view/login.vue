@@ -49,7 +49,9 @@ export default {
       }).then(res => {
         console.log(res.data);
       if(res.data.data==null||res.data.data==''){
-        alert(res.data.meta.msg)
+        this.$alert(res.data.meta.msg, '登录失败', {
+            confirmButtonText: '确定'
+         });
       }else {
         _this.userToken = 'Bearer ' + res.data.data.token;
         // 将用户token保存到vuex中
@@ -58,6 +60,9 @@ export default {
       }
     }).catch(error => {
         alert('账号或密码错误');
+      this.$alert('账号或密码错误', '登录失败', {
+          confirmButtonText: '确定'
+    });
       console.log(error);
     });
     }
