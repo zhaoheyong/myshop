@@ -1,17 +1,43 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
-import 'element-ui/lib/theme-chalk/index.css'
+import Vue from 'vue';
+import Router from 'vue-router';
+import login from '@/view/login';
+import home from '@/components/HelloWorld';
 
-Vue.use(ElementUI);
-Vue.use(Router)
+Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      redirect: '/login'
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: login
+    },
+    {
+      path: '/home',
+      name: 'home',
+      component: home
     }
   ]
-})
+});
+
+// 导航守卫
+// 使用 router.beforeEach 注册一个全局前置守卫，判断用户是否登陆
+router.beforeEach((to, from, next) => {
+  if (to.path === '/login') {
+    next();
+  } else {
+    let token = localStorage.getItem('Authorization');
+    console.log(token);
+    if (token === 'null' || token === ''||token === null) {
+      next('/login');
+    } else {
+      next();
+    }
+  }
+});
+
+export default router;
